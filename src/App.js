@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Gif from "./components/Gif";
 import NavBar from "./components/NavBar";
 import RandomGif from "./components/RandomGif";
+import RandomTrendingGif from "./components/RandomTrendingGif";
+
 import "./css/app.css";
 class App extends Component {
   constructor(props){
@@ -12,11 +14,12 @@ class App extends Component {
         url: "",
         title: ""
       }, 
+      randomReady: false, //Se usa para verificar cuando mostrar el gif random. Es set en mostrarRandomGif
       randomTrendingGif: { //recibe un gif del array de trendings en formato objeto
         url: "",
         title: ""
       },
-      randomReady: false, //Se usa para verificar cuando mostrar el gif random. Es set en mostrarRandomGif
+      randomTrendingReady: false,
       arrayDe8: "" //array que llega del metodo random8
     }
   }
@@ -49,7 +52,7 @@ class App extends Component {
        url: traerGifs[n].images.original.url,
        title: traerGifs[n].title
       }}) //setea un objeto
-    this.setState({randomReady: true}) //setea el state en true
+    this.setState({randomTrendingReady: true}) //setea el state en true
   }
 
   mostrarRandomGif = () => {
@@ -63,11 +66,9 @@ class App extends Component {
           },
           randomReady: true
         })
-      }
-    ) 
-  }
+      })}
 
-    random8 = () => {
+  random8 = () => {
       let variableSlice;
       let n0to50 = Math.floor(Math.random()*51);
       let secondNumber = (n) => {
@@ -81,34 +82,33 @@ class App extends Component {
       console.log("SEGUNDO INDICE!!!", secondNumber(n0to50))
 
       if (n0to50 > secondNumber) {
-        variableSlice = this.state.gif.slice(secondNumber, n0to50); 
         this.setState({
-          arrayDe8: variableSlice
+          arrayDe8: this.state.gif.slice(secondNumber, n0to50)
         })
+      
+      } else{
+          // variableSlice = ;
+         this.setState({
+          arrayDe8: this.state.gif.slice(n0to50, secondNumber)
+        })
+      }
+      console.log("Array de 8", this.state.arrayDe8 )
+    }
         // return this.setState({
         //   arrayDe8: this.state.gif.slice(secondNumber, n0to50)
         // })
-      } else{
-          variableSlice = this.state.gif.slice(n0to50, secondNumber);
-         this.setState({
-          arrayDe8: variableSlice
-        })
-          // return this.setState({
-          //   arrayDe8: this.state.gif.slice(n0to50, secondNumber)
-          // })
-        }
-
-      
+      // return this.setState({
+      //   arrayDe8: this.state.gif.slice(n0to50, secondNumber)
+      // })
       // let slice = [];
       // if (n0to50 > secondNumber){
       //   slice = this.state.gif.slice(secondNumber, n0to50)
       // }else{
       //    slice =this.state.gif.slice(n0to50, secondNumber)
       // }
-      console.log("Array de 8", this.state.arrayDe8 )
-    }
 
   render() {
+    {console.log(this.random8)}
     return (
       <>
       {/* NAVBAR - Si existe el array de gifs, renders el navbar. 
@@ -117,15 +117,22 @@ class App extends Component {
        <NavBar 
        mostrarRandomTrendingGif={()=>this.mostrarRandomTrendingGif()} 
        mostrarRandomGif={()=>this.mostrarRandomGif()} 
-       random8={()=>this.random8()} 
+      //  random8={()=>this.random8()} 
 
        />}
         <div className="container">
-         {console.log(this.random8())}
-        {this.state.randomReady &&  <RandomGif 
-          randomTrendingGif={this.state.randomTrendingGif} 
+          <div id="contenedor de random gif"style={{display: "flex"}}>
+          { /*Un borde rojo para diferenciarlo */}
+        {this.state.randomReady &&  this.state.randomGif &&
+        <RandomGif 
           randomGif={this.state.randomGif} 
-          randomReady={this.state.randomReady} />}
+          randomReady={this.state.randomReady} />
+          }
+             {this.state.randomTrendingReady && 
+          <RandomTrendingGif 
+          randomTrendingGif={this.state.randomTrendingGif} 
+          randomReady={this.state.randomReady} /> }
+        </div>
             <div className="row text-center">
         {/* Renders del componente GIF */}
             <Gif gif= {this.state.gif} />
