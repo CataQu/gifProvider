@@ -17,6 +17,7 @@ class App extends Component {
         title: ""
       },
       randomReady: false, //Se usa para verificar cuando mostrar el gif random. Es set en mostrarRandomGif
+      arrayDe8: "" //array que llega del metodo random8
     }
   }
   //Funcion para llamar a la API, recibe la url y un callback que setea el state
@@ -62,7 +63,50 @@ class App extends Component {
           },
           randomReady: true
         })
-      }) }
+      }
+    ) 
+  }
+
+    random8 = () => {
+      let variableSlice;
+      let n0to50 = Math.floor(Math.random()*51);
+      let secondNumber = (n) => {
+        if (n >= 42) {
+          return secondNumber = n - 8
+        } else {
+            return secondNumber = n + 8
+          }
+      }
+      console.log("NUMERO RANDOM!!!", n0to50)
+      console.log("SEGUNDO INDICE!!!", secondNumber(n0to50))
+
+      if (n0to50 > secondNumber) {
+        variableSlice = this.state.gif.slice(secondNumber, n0to50); 
+        this.setState({
+          arrayDe8: variableSlice
+        })
+        // return this.setState({
+        //   arrayDe8: this.state.gif.slice(secondNumber, n0to50)
+        // })
+      } else{
+          variableSlice = this.state.gif.slice(n0to50, secondNumber);
+         this.setState({
+          arrayDe8: variableSlice
+        })
+          // return this.setState({
+          //   arrayDe8: this.state.gif.slice(n0to50, secondNumber)
+          // })
+        }
+
+      
+      // let slice = [];
+      // if (n0to50 > secondNumber){
+      //   slice = this.state.gif.slice(secondNumber, n0to50)
+      // }else{
+      //    slice =this.state.gif.slice(n0to50, secondNumber)
+      // }
+      console.log("Array de 8", this.state.arrayDe8 )
+    }
 
   render() {
     return (
@@ -73,11 +117,11 @@ class App extends Component {
        <NavBar 
        mostrarRandomTrendingGif={()=>this.mostrarRandomTrendingGif()} 
        mostrarRandomGif={()=>this.mostrarRandomGif()} 
+       random8={()=>this.random8()} 
+
        />}
         <div className="container">
-          {console.log("RANDOM GIF EN APPJS", this.state.randomGif)}
-          {console.log("RANDOM TRENDING EN APPJS", this.state.randomTrendingGif)}
-
+         {console.log(this.random8())}
         {this.state.randomReady &&  <RandomGif 
           randomTrendingGif={this.state.randomTrendingGif} 
           randomGif={this.state.randomGif} 
