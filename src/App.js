@@ -6,8 +6,8 @@ import RandomTrendingGif from "./components/RandomTrendingGif";
 
 import "./css/app.css";
 class App extends Component {
-  constructor(props){
-    super(props);
+  constructor(){
+    super();
     this.state = {
       gif: "", //recibe un array de objetos gifs
       randomGif: { //recibe un random gif de todos los de giphy
@@ -42,7 +42,7 @@ class App extends Component {
   componentDidMount(){
     this.traerGifNuevo()
   }
-  componentDidUpdate(){
+  componentDidUpdate(){  
   }
   //Funcion que se ejecuta al presionar el boton de RandomGif
   mostrarRandomTrendingGif = () => {
@@ -69,7 +69,7 @@ class App extends Component {
       })}
 
   random8 = () => {
-      let variableSlice;
+      // let variableSlice;
       let n0to50 = Math.floor(Math.random()*51);
       let secondNumber = (n) => {
         if (n >= 42) {
@@ -94,21 +94,8 @@ class App extends Component {
       }
       console.log("Array de 8", this.state.arrayDe8 )
     }
-        // return this.setState({
-        //   arrayDe8: this.state.gif.slice(secondNumber, n0to50)
-        // })
-      // return this.setState({
-      //   arrayDe8: this.state.gif.slice(n0to50, secondNumber)
-      // })
-      // let slice = [];
-      // if (n0to50 > secondNumber){
-      //   slice = this.state.gif.slice(secondNumber, n0to50)
-      // }else{
-      //    slice =this.state.gif.slice(n0to50, secondNumber)
-      // }
 
   render() {
-    {console.log(this.random8)}
     return (
       <>
       {/* NAVBAR - Si existe el array de gifs, renders el navbar. 
@@ -117,7 +104,7 @@ class App extends Component {
        <NavBar 
        mostrarRandomTrendingGif={()=>this.mostrarRandomTrendingGif()} 
        mostrarRandomGif={()=>this.mostrarRandomGif()} 
-      //  random8={()=>this.random8()} 
+       random8={()=>this.random8()} 
 
        />}
         <div className="container">
@@ -135,7 +122,7 @@ class App extends Component {
         </div>
             <div className="row text-center">
         {/* Renders del componente GIF */}
-            <Gif gif= {this.state.gif} />
+            <Gif gif= {this.state.gif} arrayDe8= {this.state.arrayDe8} />
           </div>
         </div>
       </>
